@@ -1,8 +1,13 @@
 <?PHP
 
+require("./getid3/getid3.php");
 
+$our_mp3 = getID3();
+$counter = 25;
+$counted = 0;
 function listFiles( $from = '.')
 {
+	global $counter,$counted;
     if(! is_dir($from))
         return false;
    
@@ -17,11 +22,18 @@ function listFiles( $from = '.')
                 if( $file == '.' || $file == '..')
                     continue;
                 $path = $dir . '/' . $file;
-                if( is_dir($path))
+                if( is_dir($path)){
                     $dirs[] = $path;
-                else
+                }else{
                     $files[] = $path;
-				print $path;
+					
+					print $path . "\n";
+					print_r($our_mp3->analyze($path));
+					$counted++;
+					if($counter == $counted){
+						exit();
+					}
+				}
             }
             closedir($dh);
         }
@@ -29,5 +41,5 @@ function listFiles( $from = '.')
     return $files;
 }
 
-print_r(listFiles());
+print_r(listFiles(("/home/alexkess/mymp3.tastestalkr.com/mp3s"));
 ?>
