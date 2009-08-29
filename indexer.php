@@ -1,8 +1,14 @@
 <?PHP
 
+require("./getid3/getid3.php");
 
+$our_mp3 = new getID3;
+print_r($our_mp3 );
+$counter = 1;
+$counted = 0;
 function listFiles( $from = '.')
 {
+	global $counter,$counted,$our_mp3;
     if(! is_dir($from))
         return false;
    
@@ -15,13 +21,20 @@ function listFiles( $from = '.')
             while( false !== ($file = readdir($dh)))
             {
                 if( $file == '.' || $file == '..')
-                    continue;
+	    continue;
                 $path = $dir . '/' . $file;
-                if( is_dir($path))
+                if( is_dir($path)){
                     $dirs[] = $path;
-                else
+                }else{
                     $files[] = $path;
-				print $path;
+					
+					print $path . "\n";
+					print_r($our_mp3->analyze($path));
+					$counted++;
+					if($counter == $counted){
+						exit();
+					}
+				}
             }
             closedir($dh);
         }
