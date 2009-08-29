@@ -29,5 +29,5 @@ function listFiles( $from = '.')
     return $files;
 }
 
-print_r(listFiles());
+print_r(listFiles("/home/alexkess/mymp3.tastestalkr.com/mp3s"));
 ?>
